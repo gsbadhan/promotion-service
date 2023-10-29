@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DroolsConfig {
     private static final String RULES_CUSTOMER_RULES_DRL = "rules/card-discount.drl";
-    private static final KieServices kieServices = KieServices.Factory.get();
 
     @Bean
     public KieContainer kieContainer() {
+        KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
         kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_CUSTOMER_RULES_DRL));
         KieBuilder kb = kieServices.newKieBuilder(kieFileSystem);

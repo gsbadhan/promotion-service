@@ -1,0 +1,34 @@
+import com.example.promoservice.contoller.Bank;
+import com.example.promoservice.contoller.CardType;
+import com.example.promoservice.contoller.DiscountRequest;
+global com.example.promoservice.contoller.DiscountResponse discountObj;
+
+dialect "mvel"
+
+rule "discount on debit card for all banks"
+    when
+        DiscountRequest(cardType == CardType.DEBIT)
+    then
+        discountObj.setAmount(80)
+end
+
+rule "special discount on HDFC debit card"
+    when
+        DiscountRequest(bankName == Bank.HDFC && cardType == CardType.DEBIT)
+    then
+        discountObj.setAmount(100)
+end
+
+rule "discount on credit card for all banks"
+    when
+        DiscountRequest(cardType == CardType.CREDIT)
+    then
+        discountObj.setPercentage(1)
+end
+
+rule "special discount on HDFC credit card"
+    when
+        DiscountRequest(bankName == Bank.HDFC && cardType == CardType.CREDIT)
+    then
+        discountObj.setPercentage(1.5)
+end

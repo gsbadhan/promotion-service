@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/discount-svc/v1/discount")
+@RequestMapping("/discount-svc/v1/discounts")
 @Slf4j
 @CrossOrigin
 public class DiscountController {
@@ -25,10 +25,12 @@ public class DiscountController {
             @ApiResponse(responseCode = "404", description = "Not found"),
             @ApiResponse(responseCode = "500", description = "Error occurred while processing")
     })
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<DiscountResponse> getDiscountByCard(@RequestBody DiscountRequest discountRequest) throws Exception {
-        log.info("get discount request id={}", discountRequest);
-        DiscountResponse response = disocuntService.getDiscount(discountRequest);
+    @GetMapping(value = "/cards", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<DiscountResponse> getCardDiscount(@RequestParam("bank-name") String bankName,
+                                                            @RequestParam("card-type") String cardType) throws Exception {
+        log.info("get discount request bankName={}, cardType={}", bankName, cardType);
+        DiscountResponse response = disocuntService.getDiscount(new DiscountRequest(Bank.valueOf(bankName.toUpperCase()),
+                CardType.valueOf(cardType.toUpperCase())));
         return ResponseEntity.ok(response);
     }
 }
